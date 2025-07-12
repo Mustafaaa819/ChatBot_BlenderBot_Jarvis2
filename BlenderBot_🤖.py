@@ -29,7 +29,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 device = torch.device("cpu") #This tells PyTorch where to run your model: on CPU or GPU ,or cuda (for GPU).
 model = model.to(device)   #Moves model to CPU/GPU
 
-print("Welcome to the Second Edition of Copy-Paste Jarvis (This time Jarvis2): ")
+print("Welcome to the Second Edition of Copy-Paste Jarvis (This time Jarvis2) (First Edition is in the Same Repo, check ChatBot Transformers: ")
 
 user_name = input("Who's Talking, Enter Your Good Name: ")
 print("Let Jarvis be Awoken from his eternal Sleep! Loading Jarvis: ")
@@ -38,9 +38,12 @@ print("........")
 print(f"Throw Your Questions at me {user_name}: ")
 time.sleep(2)
 
+#History of Conversation:
+history = []
 
 while True:
     input_of_user = input(f"{user_name}: ")
+    history.append(input_of_user)
     byeMsg = f"Good Bye {user_name}! "
     if input_of_user == "bye":
         print("Jarvis2: ", byeMsg)
