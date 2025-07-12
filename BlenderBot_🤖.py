@@ -9,8 +9,8 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import time
 import torch
-
 import os,logging,warnings
+import speech_recognition as sr
 
 #SafetyChecks to shut up unnecessary Future Warnings:
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -18,6 +18,7 @@ os.environ["PYTHONWARNINGS"] = "ignore"
 warnings.filterwarnings("ignore")
 warnings.simplefilter(action="ignore", category=FutureWarning)
 logging.getLogger("transformers").setLevel(logging.ERROR)
+
 
 
 #Main Core Logic (Load BlenderBot):
@@ -29,7 +30,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 device = torch.device("cpu") #This tells PyTorch where to run your model: on CPU or GPU ,or cuda (for GPU).
 model = model.to(device)   #Moves model to CPU/GPU
 
-print("Welcome to the Second Edition of Copy-Paste Jarvis (This time Jarvis2) (First Edition is in the Same Repo, check ChatBot Transformers: ")
+print("Welcome to the Second Edition of Copy-Paste Jarvis (This time Jarvis2) (First Edition is in the Same Repo, check out ChatBot Transformers: ")
 
 user_name = input("Who's Talking, Enter Your Good Name: ")
 print("Let Jarvis be Awoken from his eternal Sleep! Loading Jarvis: ")
@@ -38,19 +39,37 @@ print("........")
 print(f"Throw Your Questions at me {user_name}: ")
 time.sleep(2)
 
-#History of Conversation:
-history = []
+engine = sr.Recognizer()   #Creates a Brain that listens to the voice.
 
 while True:
-    input_of_user = input(f"{user_name}: ")
-    history.append(input_of_user)
+    choice = input("Do you want to speak or text? (s/t) ")
+    if choice == "s":
+        with sr.Microphone() as source:   #Activates mic and connects it to recognizer
+            audio = engine.listen(source)  #Records sound from the mic
+
+        try:
+            input_of_user = engine.recognize_google(audio)
+            print(f"{user_name} (via mic): {input_of_user}")
+
+        except:
+            print("Sorry, Jarvis2 wasn't able to understand you.")
+            continue
+
+    elif choice == "t":
+        input_of_user = input(f"{user_name}: ")
+
+    else:
+        print("Oopsie, Wrong Choice! Try 's' or 't'. ")
+        continue
+
+
     byeMsg = f"Good Bye {user_name}! "
-    if input_of_user == "bye":
+    if input_of_user.lower() == "bye":
         print("Jarvis2: ", byeMsg)
         break
 
     #Tokenize the Input:
-    inputs = tokenizer([input_of_user], return_tensors="pt")
+    inputs = tokenizer([input_of_user], return_tensors="pt", truncation=True, max_length=512)
     inputs = {k: v.to(device) for k, v in inputs.items()}  #This loop Moves input tensors to CPU/GPU
 
     print("Generating Response...")
