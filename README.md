@@ -40,3 +40,22 @@ reply = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
 
  Author
 Made with love & learning by Mustafaa
+
+
+
+ 🆕 Voice Input Feature (BlenderBot Jarvis2 Upgrade)
+
+This version adds "voice-based interaction" using the `speech_recognition` library.  
+You folks can choose your option if you want to interact with BlenderBot using Text or Speech. (Just Give it a Try)
+
+ 🛠️ How it works:
+- Microphone is accessed using `sr.Microphone()`
+- engine.listen() listens to the user because Microphone is activated and connected to the Recognizer().
+- Audio is converted to text via `engine.recognize_google(audio)` (a Google free API to Convert speech to text)
+- Falls back to text if speech fails or user chooses typing.
+
+### 📦 Additional Requirements:
+Make sure the following packages are installed:
+```bash
+pip install SpeechRecognition
+pip install PyAudio
