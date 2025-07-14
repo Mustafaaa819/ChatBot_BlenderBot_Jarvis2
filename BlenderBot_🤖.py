@@ -10,7 +10,17 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import time
 import torch
 import os,logging,warnings
-import speech_recognition as sr
+import speech_recognition as sr #Speech to Text Library.
+import asyncio
+import edge_tts #Text to Speech Library.
+from playsound import playsound
+
+
+async def speak(text):
+    communicate = edge_tts.Communicate(text=text, voice="en-US-GuyNeural")
+    await communicate.save("response.mp3")
+    playsound("response.mp3")
+
 
 #SafetyChecks to shut up unnecessary Future Warnings:
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -32,28 +42,33 @@ model = model.to(device)   #Moves model to CPU/GPU
 
 print("Welcome to the Second Edition of Copy-Paste Jarvis (This time Jarvis2) (First Edition is in the Same Repo, check out ChatBot Transformers: ")
 
-user_name = input("Who's Talking, Enter Your Good Name: ")
+user_name = input("Who's Here at my doorstep, Enter Your Good Name: ")
 print("Let Jarvis be Awoken from his eternal Sleep! Loading Jarvis: ")
-time.sleep(3)
+time.sleep(2)
 print("........")
 print(f"Throw Your Questions at me {user_name}: ")
-time.sleep(2)
+time.sleep(1)
 
 engine = sr.Recognizer()   #Creates a Brain that listens to the voice.
 
+choice = input("Do you want to speak or text(s/t):  ")
 while True:
-    choice = input("Do you want to speak or text? (s/t) ")
     if choice == "s":
         with sr.Microphone() as source:   #Activates mic and connects it to recognizer
-            audio = engine.listen(source)  #Records sound from the mic
+            print("Listening....")
+            engine.adjust_for_ambient_noise(source, duration=1)  #For louder and noisy places, use duration=3 or 4 secs.
+            print("Energy Threshold: ", engine.energy_threshold)
+            audio = engine.listen(source, phrase_time_limit=5)  #Records sound from the mic upto the specified limit.
 
         try:
             input_of_user = engine.recognize_google(audio)
             print(f"{user_name} (via mic): {input_of_user}")
 
-        except:
+        except sr.UnknownValueError:
             print("Sorry, Jarvis2 wasn't able to understand you.")
             continue
+        except sr.RequestError:
+            print("No internet Connection. Please connect to Wifi😒.")
 
     elif choice == "t":
         input_of_user = input(f"{user_name}: ")
@@ -64,7 +79,8 @@ while True:
 
 
     byeMsg = f"Good Bye {user_name}! "
-    if input_of_user.lower() == "bye":
+    if input_of_user.lower() == "bye" or input_of_user.lower() == "goodbye":
+        asyncio.run(speak(byeMsg))
         print("Jarvis2: ", byeMsg)
         break
 
@@ -80,8 +96,8 @@ while True:
 
     time.sleep(1)
     print(".....")
+    asyncio.run(speak(reply))
     print("Jarvis2: ", reply)
-
 
 
 
