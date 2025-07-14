@@ -1,4 +1,4 @@
-# 🤖 Jarvis2 — BlenderBot Chatbot
+ 🤖 Jarvis2 — BlenderBot Chatbot
 
 A terminal-based chatbot powered by Facebook’s `blenderbot-400M-distill` and Hugging Face Transformers — made it came to life by Mustafaa.
 
@@ -13,7 +13,7 @@ A terminal-based chatbot powered by Facebook’s `blenderbot-400M-distill` and H
 
 ---
 
-## 🚀 How to Run
+ 🚀 How to Run
 
 1. **Clone the repo**
 ```bash
@@ -54,8 +54,22 @@ You folks can choose your option if you want to interact with BlenderBot using T
 - Audio is converted to text via `engine.recognize_google(audio)` (a Google free API to Convert speech to text)
 - Falls back to text if speech fails or user chooses typing.
 
-### 📦 Additional Requirements:
+ 📦 Additional Requirements:
 Make sure the following packages are installed:
 ```bash
 pip install SpeechRecognition
 pip install PyAudio
+
+
+
+---
+
+
+
+ 🆕 BlenderBot Speaks back to You (Upgrade Using edge_tts and asyncio):
+- Added a Text-to-Speech Library (edge_ttx) for having a word with User in Talking Mode.
+- It uses asyncio alongside it which helps pyhton run different things at once.
+- async def are called 'coroutines' also called as pausable functions.
+- await: When different things are happening at once like saving the audio file and voice processing then await keyword comes in handy, it basically says tp python that wait for this task without crashing the whole program.
+
+- Give it a try:
