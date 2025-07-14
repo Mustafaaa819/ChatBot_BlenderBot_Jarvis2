@@ -49,7 +49,7 @@ print("........")
 print(f"Throw Your Questions at me {user_name}: ")
 time.sleep(1)
 
-engine = sr.Recognizer()   #Creates a Brain that listens to the voice.
+engine = sr.Recognizer()   #Creates a Brain that listens to the voice
 
 choice = input("Do you want to speak or text(s/t):  ")
 while True:
