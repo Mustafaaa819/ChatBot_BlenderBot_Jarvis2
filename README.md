@@ -67,7 +67,7 @@ Uses edge_tts.Communicate to convert text to high-quality MP3
 
 Plays audio using playsound
 
-<<<<<<< HEAD
+
  📦 Additional Requirements:
 Make sure the following packages are installed:
 ```bash
@@ -87,7 +87,7 @@ pip install PyAudio
 - await: When different things are happening at once like saving the audio file and voice processing then await keyword comes in handy, it basically says tp python that wait for this task without crashing the whole program.
 
 - Give it a try:
-=======
+
 Automatically deletes the audio after playback to keep memory clean
 
 Runs asynchronously using Python’s asyncio
@@ -113,4 +113,4 @@ If you'd like to contribute or extend this feature, create a pull request from y
 Made with love and constant learning by Mustafaa
 Just a normal introvert building an AI that listens and talks back.
 
->>>>>>> voice-integration
+
